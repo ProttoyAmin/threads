@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserProfile, UserButton } from '@clerk/nextjs';
+import { UserProfile, UserButton, OrganizationSwitcher } from '@clerk/nextjs';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -13,8 +13,13 @@ function Navbar() {
             <p className='text-heading3-bold text-light-1 max-xs:hidden'>Threads</p>
           </Link>
         </div>
-        <div className="profileInfo">
-          <UserButton />
+        <div className="profileInfo flex items-center gap-3">
+          <div className="switchCommunity">
+            <OrganizationSwitcher />
+          </div>
+          <div className="userButton">
+            <UserButton />
+          </div>
         </div>
       </nav>
     </>

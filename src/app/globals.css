@@ -21,7 +21,7 @@
 }
 
 .rightbar {
-  @apply fixed top-0 right-0 h-full w-1/6;
+  @apply border fixed top-0 right-0 h-full w-1/6 bg-gray-900;
 }
 
 .pb-env-safe-bottom {
