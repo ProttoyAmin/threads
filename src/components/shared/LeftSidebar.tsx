@@ -6,13 +6,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
 function LeftSidebar() {
-  const router = useRouter()
   const pathname = usePathname()
   console.log("PATHNAME: ", pathname)
   const {userId} = useAuth()
 
   console.log("UserID: ", userId)
-  
+
   return (
     <section className="leftsidebar ">
       <div className='flex flex-col gap-2.5 my-20'>
