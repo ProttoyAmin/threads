@@ -51,7 +51,7 @@ export default function RootLayout({
                   {children}
                 </div>
               </section>
-              <div className="right border-yellow-700">
+              <div className="right">
                 <RightSidebar />
               </div>
               <div className="bottom">
