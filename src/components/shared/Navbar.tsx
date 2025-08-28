@@ -15,7 +15,13 @@ function Navbar() {
         </div>
         <div className="profileInfo flex items-center gap-3">
           <div className="switchCommunity">
-            <OrganizationSwitcher />
+            <OrganizationSwitcher 
+                appearance={{
+                  elements: {
+                  organizeSwitcherTrigger: 'py-2 px-4'
+                }
+                }}
+            />
           </div>
           <div className="userButton">
             <UserButton />

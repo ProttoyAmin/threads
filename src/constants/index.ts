@@ -29,4 +29,9 @@ export const sideBarLinks = [
         route: "/profile",
         label: "Profile",
     },
+    {
+        imgUrl: "/assets/user.svg",
+        route: "/onboarding",
+        label: "Onboard",
+    },
 ]
