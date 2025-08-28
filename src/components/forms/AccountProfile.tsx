@@ -19,6 +19,8 @@ import Image from 'next/image';
 import { Textarea } from '../ui/textarea';
 import { isBase64Image } from '@/lib/utils';
 import { useUploadThing } from '@/lib/uploadthing';
+import { updateUser } from '@/lib/actions/user.actions';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface Props {
   user: {
@@ -35,6 +37,8 @@ interface Props {
 function AccountProfile({ user, btnTitle }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing('media');
+  const router = useRouter();
+  const pathname = usePathname();
 
   console.log("StartUpload: ",startUpload)
 
@@ -52,8 +56,6 @@ function AccountProfile({ user, btnTitle }: Props) {
   );
 
   async function onSubmit(values: z.infer<typeof UserValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log("FORM VALUES: ", values);
     const blob = values.profile_photo;
     const hasImageChanged = isBase64Image(blob);
@@ -64,14 +66,28 @@ function AccountProfile({ user, btnTitle }: Props) {
       console.log("Inside hasImageChanged condition...")
       console.log("Image Response:", imageResponse)
 
-      if (imageResponse && imageResponse[0].fileUrl){
-        values.profile_photo = imageResponse[0].fileUrl;
+      if (imageResponse && imageResponse[0]?.ufsUrl){
+        values.profile_photo = imageResponse[0].ufsUrl;
       }
 
     }
 
     // Todo: Update User Profile
+    const updatedUser = {
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname,
+    }
+    await updateUser(updatedUser);
 
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
   }
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
