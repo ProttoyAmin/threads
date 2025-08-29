@@ -7,39 +7,36 @@ import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
 function LeftSidebar() {
   const pathname = usePathname()
-  console.log("PATHNAME: ", pathname)
-  const {userId} = useAuth()
-
-  console.log("UserID: ", userId)
+  const { userId } = useAuth();
 
   return (
     <section className="leftsidebar ">
       <div className='flex flex-col gap-2.5 my-20'>
         {
-          sideBarLinks.map( (link) => {
+          sideBarLinks.map((link) => {
             const isActive = (pathname.includes(link.route) && link.route.length > 1) || pathname == link.route;
 
             if (link.route === "/profile") link.route = `${link.route}/${userId}`;
 
             return (
               <Link href={link.route}
-                    key={link.label}
-                    className={`${isActive && "rounded-md bg-blue-400"}`}
+                key={link.label}
+                className={`${isActive && "rounded-md bg-blue-400"}`}
               >
-              <div className='flex gap-5 h-15 p-5 rounded-md items-center hover:bg-blue-400'>
-              <Image
-              src={link.imgUrl}
-              alt={link.label}
-              width={24}
-              height={24}
-              />
-              <p className="route">
-                {link.label}
-              </p>
-              </div>
+                <div className='flex gap-5 h-15 p-5 rounded-md items-center hover:bg-blue-400'>
+                  <Image
+                    src={link.imgUrl}
+                    alt={link.label}
+                    width={24}
+                    height={24}
+                  />
+                  <p className="route">
+                    {link.label}
+                  </p>
+                </div>
               </Link>
             )
-          } )
+          })
         }
       </div>
 

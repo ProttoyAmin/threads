@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
-export interface IUser {
+export interface IUser extends mongoose.Document{
     id: string;
     username: string;
     name: string;
-    image: string;
-    bio: string;
-    threads: mongoose.Schema.Types.ObjectId;
-    onboard: boolean;
-    communities: mongoose.Schema.Types.ObjectId;
+    image?: string;
+    bio?: string;
+    threads: mongoose.Schema.Types.ObjectId[];
+    onboard?: boolean;
+    communities: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema = new mongoose.Schema<IUser>(

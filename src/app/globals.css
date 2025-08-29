@@ -20,11 +20,11 @@
 }
 
 .leftsidebar {
-  @apply max-lg:hidden fixed h-full left-0 top-0 flex flex-col justify-between p-10 w-1/6 bg-gray-900;
+  @apply max-lg:hidden fixed h-full left-0 top-0 flex flex-col justify-between p-5 w-1/8 bg-gray-900;
 }
 
 .rightbar {
-  @apply border fixed top-0 right-0 h-full w-1/6 bg-gray-900;
+  @apply fixed top-0 right-0 h-full w-1/6 bg-gray-900;
 }
 
 .pb-env-safe-bottom {

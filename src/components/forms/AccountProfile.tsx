@@ -40,9 +40,6 @@ function AccountProfile({ user, btnTitle }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log("StartUpload: ",startUpload)
-
-
   const form = useForm<z.infer<typeof UserValidation>>(
     {
       resolver: zodResolver(UserValidation),
@@ -56,23 +53,18 @@ function AccountProfile({ user, btnTitle }: Props) {
   );
 
   async function onSubmit(values: z.infer<typeof UserValidation>) {
-    console.log("FORM VALUES: ", values);
+
     const blob = values.profile_photo;
     const hasImageChanged = isBase64Image(blob);
     console.log("HasImageChanged: ", hasImageChanged)
 
     if (hasImageChanged) {
       const imageResponse = await startUpload(files);
-      console.log("Inside hasImageChanged condition...")
-      console.log("Image Response:", imageResponse)
-
-      if (imageResponse && imageResponse[0]?.ufsUrl){
+      if (imageResponse && imageResponse[0]?.ufsUrl) {
         values.profile_photo = imageResponse[0].ufsUrl;
       }
-
     }
 
-    // Todo: Update User Profile
     const updatedUser = {
       userId: user.id,
       username: values.username,
@@ -81,8 +73,8 @@ function AccountProfile({ user, btnTitle }: Props) {
       image: values.profile_photo,
       path: pathname,
     }
-    await updateUser(updatedUser);
 
+    await updateUser(updatedUser);
     if (pathname === "/profile/edit") {
       router.back();
     } else {
@@ -91,7 +83,7 @@ function AccountProfile({ user, btnTitle }: Props) {
   }
 
   const handleImage = (event: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
-    console.log("evenT: ", event)
+    event.preventDefault()
     const fileReader = new FileReader();
 
     if (event.target.files && event.target.files?.length > 0) {
@@ -212,7 +204,9 @@ function AccountProfile({ user, btnTitle }: Props) {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className='cursor-pointer h-12'>
+          {btnTitle}
+        </Button>
       </form>
     </Form>
   )

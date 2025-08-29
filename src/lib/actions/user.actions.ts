@@ -13,7 +13,10 @@ interface Params {
     path: string;
 }
 
-
+// .populate({
+//             path: "communities",
+//             model: Community
+//         })
 export async function updateUser(updatedUser: Params): Promise<void> {
 
     try {
@@ -40,4 +43,15 @@ export async function updateUser(updatedUser: Params): Promise<void> {
     }
 
 
+}
+
+export async function fetchUser(userId: string) {
+    try {
+        await connectToDatabase();
+        const userInfo = await User.findOne({id: userId});
+        
+        return userInfo;
+    } catch (error: any) {
+        throw new Error(`Failed to fetch user: ${error.message}`);
+    }
 }
