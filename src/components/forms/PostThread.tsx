@@ -20,6 +20,8 @@ import { Textarea } from '../ui/textarea';
 import { isBase64Image } from '@/lib/utils';
 import { useUploadThing } from '@/lib/uploadthing';
 import { usePathname, useRouter } from 'next/navigation';
+import { createThread } from '@/lib/actions/thread.actions';
+import { useOrganization } from '@clerk/nextjs';
 
 interface Props {
     userId: string;
@@ -27,6 +29,11 @@ interface Props {
 }
 
 function PostThread({ userId, btnTitle }: Props) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const { organization } = useOrganization();
+    console.log("Organization: ", organization!.id)
+
     const form = useForm<z.infer<typeof ThreadValidation>>(
         {
             resolver: zodResolver(ThreadValidation),
@@ -37,9 +44,22 @@ function PostThread({ userId, btnTitle }: Props) {
         }
     );
 
+    const { isSubmitting } = form.formState;
+
     async function onSubmit(values: z.infer<typeof ThreadValidation>) {
-        console.log("Form Values: ", values)
+        console.log("Form Values: ", values);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         form.reset();
+
+        const threadInfo = {
+            text: values.thread,
+            author: userId,
+            communityId: organization ? organization.id : null,
+            path: pathname
+        }
+
+        await createThread(threadInfo);
+        router.push('/')
     }
     return (
         <>
@@ -68,7 +88,9 @@ function PostThread({ userId, btnTitle }: Props) {
                         )}
                     />
 
-                    <Button type="submit" className='cursor-pointer h-12'>{btnTitle}</Button>
+                    <Button type="submit" className="cursor-pointer h-12" disabled={isSubmitting}>
+                        {isSubmitting ? "Posting..." : btnTitle}
+                    </Button>
                 </form>
             </Form>
         </>

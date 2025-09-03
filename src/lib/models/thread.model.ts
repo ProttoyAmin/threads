@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 export interface IThread extends mongoose.Document {
     text: string;
-    author: string;
+    author: mongoose.Schema.Types.ObjectId;
     community?: mongoose.Types.ObjectId;
     parentId?: string;
     children: mongoose.Types.ObjectId[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 const threadSchema = new mongoose.Schema<IThread>(
@@ -17,8 +17,9 @@ const threadSchema = new mongoose.Schema<IThread>(
             required: true
         },
         author: {
-            type: String,
-            ref: 'User'
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
         },
         community: {
             type: mongoose.Schema.Types.ObjectId,
@@ -50,3 +51,39 @@ const threadSchema = new mongoose.Schema<IThread>(
 
 const Thread = mongoose.models?.Thread || mongoose.model("Thread", threadSchema, "Threads")
 export default Thread;
+
+
+// import mongoose from "mongoose";
+
+// const threadSchema = new mongoose.Schema({
+//   text: {
+//     type: String,
+//     required: true,
+//   },
+//   author: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "User",
+//     required: true,
+//   },
+//   community: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Community",
+//   },
+//   createdAt: {
+//     type: Date,
+//     default: Date.now,
+//   },
+//   parentId: {
+//     type: String,
+//   },
+//   children: [
+//     {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "Thread",
+//     },
+//   ],
+// });
+
+// const Thread = mongoose.models.Thread || mongoose.model("Thread", threadSchema);
+
+// export default Thread;
